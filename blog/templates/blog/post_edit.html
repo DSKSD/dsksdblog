@@ -1,0 +1,24 @@
+{% extends "blog/layout.html" %}
+
+{% block title %}
+성동님의 블로그
+{% endblock %}
+
+{% block content %}
+
+<div class = "container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+          <h1>글을 수정하세요.</h1>
+          <form style = "margin-bottom: 20px;" action="{% url 'post_edit' pk=post.pk %}" method="POST">{% csrf_token %}
+              <input style="margin-bottom: 2px;" class="form-control" value="{{post.title}}" type ="text" id="title" name="title">
+              <textarea class="form-control" id="content" rows=5 name="content">{{post.text}}</textarea>
+              <button type="submit" class="btn btn-info" style="margin-top: 5px;">수정하기</button>
+           </form>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "blog/layout.html" %} 
+{% block title %}
+회원가입
+{%endblock %} 
+
+{% block content %}
+<div class = "container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+           <h2>회원가입</h2>
+        
+           <form action="/accounts/register/" method="post">{% csrf_token %}
+             {{form.as_p}}   <input type="submit" value="Register" />
+        
+           </form>
+
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+</div>
+
+ {% endblock %}

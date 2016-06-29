@@ -1,0 +1,42 @@
+{% extends "blog/layout.html"%} 
+
+{% block title %}
+Login
+{% endblock %} 
+
+{% block content %}
+<div class = "container">
+    <div class="row" style="padding-top: 200px">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+         <form method="post" action="{% url 'django.contrib.auth.views.login' %}">{% csrf_token %}
+
+            
+            {% if form.errors %}
+            <p>Your Username or Password were not entered correctly. Please try again.</p>
+            {% endif %}
+            
+            <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+                <td>{{ form.username.errors }}</td> 
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+                <td>{{ form.password.errors }}</td>
+            </tr>
+            </table>
+            
+            <input type="submit" value="login" />
+
+        </form>
+
+
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+</div>
+
+ {% endblock %}

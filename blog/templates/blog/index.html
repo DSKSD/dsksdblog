@@ -1,0 +1,35 @@
+{% extends "blog/layout.html" %}
+
+{% block title %}
+성동님의 블로그
+{% endblock %}
+
+{% block content %}
+
+<div class = "container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+          <form style = "margin-bottom: 20px;" action="{% url 'write' %}" method="POST">{% csrf_token %}
+              <input style="margin-bottom: 2px;" class="form-control" type ="text" id="title" name="title" placeholder="제목을 입력하세요.">
+              <textarea class="form-control" id="content" rows=5  name="content" placeholder="무슨 생각하세요?"></textarea>
+              <button type="submit" class="btn btn-info" style="margin-top: 5px;">글쓰기</button>
+           </form>
+          {% for post in posts %}
+              <div class="well">
+                  {% if user == post.author %}
+                  <a style="color: black; margin-left: 5px; float: right;" href= "{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                  <a style="color: black; float: right;" href= "{% url 'post_delete' pk=post.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+                  {% endif %}
+                  <p><strong>{{post.author}}</strong>  {{post.created_date}}</p>
+                  <p><h1>{{post.title}}</h1></p>
+                  <p>{{post.text}}</p>
+              </div>
+          {% endfor %}
+          
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+</div>
+
+{% endblock %}
