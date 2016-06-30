@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',{'next_page': '/'}, name='logout'),
     url(r'^accounts/loggedin/$', views.loggedin, name='loggedin'),
+    url(r'^reply_write/$', views.reply_write, name='reply_write'),
+    url(r'^reply/(?P<pk>\d+)/delete/$', views.reply_delete, name='reply_delete'),
 ]

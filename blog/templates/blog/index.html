@@ -11,25 +11,61 @@
       <div class="col-md-2"></div>
       <div class="col-md-8">
           <form style = "margin-bottom: 20px;" action="{% url 'write' %}" method="POST">{% csrf_token %}
-              <input style="margin-bottom: 2px;" class="form-control" type ="text" id="title" name="title" placeholder="제목을 입력하세요.">
+              <input style="margin-bottom: 2px;" class="form-control" type ="text" id="title" name="title" placeholder="제목을 입력하세요." required>
               <textarea class="form-control" id="content" rows=5  name="content" placeholder="무슨 생각하세요?"></textarea>
               <button type="submit" class="btn btn-info" style="margin-top: 5px;">글쓰기</button>
            </form>
           {% for post in posts %}
               <div class="well">
-                  {% if user == post.author %}
+                  {% if current_user == post.author %}
                   <a style="color: black; margin-left: 5px; float: right;" href= "{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
                   <a style="color: black; float: right;" href= "{% url 'post_delete' pk=post.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
                   {% endif %}
                   <p><strong>{{post.author}}</strong>  {{post.created_date}}</p>
                   <p><h1>{{post.title}}</h1></p>
                   <p>{{post.text}}</p>
-              </div>
+                  <div class= "reply_{{ post.pk }}">
+                    {% for x in post.comments.all %}
+                      <p><strong>{{x.author}}  </strong>{{ x.text }}
+                      <!-- 왜 이 if문이 안먹히는 걸까?ㅠㅠㅠㅠ-->
+                      {% if current_user == x.author %}
+                      <a style="color: black; float: right;" href= "{% url 'reply_delete' pk=x.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+                      {% endif %}
+                      </p>
+                
+                    {% endfor %} 
+                  </div>
+                  <input type = "text" name="content" class="form-control" id="content_{{ post.pk }}"  placeholder= "댓글입력하세요." required>
+                  <button value = "{{ post.pk }}" type="submit" class="btn btn-default reply_submit">댓글 달기</button>
+              </div>  
           {% endfor %}
           
       </div>
       <div class="col-md-2"></div>
     </div>
 </div>
+<script>
+
+$(function(){ // 인터넷 페이지가 로딩되면 이 js를 쓰겠다.
+
+  //reply_submit 이란 녀석이 클릭이 되면, 아래 코드를 돌린다.
+  $('.reply_submit').click(function(){
+    post_id = this.value;
+    post_content = $("#content_" + post_id).val();
+    $.ajax({
+      method: "POST",
+      url: "{% url 'reply_write' %}",
+      data: {content: post_content, id_of_post: post_id, csrfmiddlewaretoken: '{{ csrf_token }}',},
+      // AJAX로 CSRF 토큰 넘겨주려면 이렇게 해주면 됩니다요. 
+      success: function(){
+        $( ".reply_" + post_id ).append( "<p class='bg-info'><strong>" + "{{current_user}} " + "</strong>" + post_content + "</p>" );
+        $("#content_" + post_id).val('');
+      }
+    });
+    
+  });
+});
+</script>
+
 
 {% endblock %}
