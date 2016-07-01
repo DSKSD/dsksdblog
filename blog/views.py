@@ -53,13 +53,16 @@ def write(request):
     post.save()
 
     return redirect('blog.views.index')
-    
-def delete(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+
+
+def delete(request):
+    pid = request.POST['id_of_post']
+    post = get_object_or_404(Post, pk=pid)
     post.delete()
     
     return redirect('blog.views.index')
     
+@login_required    
 def edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -84,7 +87,8 @@ def reply_write(request):
     comment.save()
     
     return redirect('blog.views.index')
-    
+
+@login_required    
 def reply_delete(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
