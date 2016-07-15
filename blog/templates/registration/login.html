@@ -16,24 +16,24 @@ Login
             <p>Your Username or Password were not entered correctly. Please try again.</p>
             {% endif %}
             
-            <table>
-            <tr>
+            <table class="table table-striped">
+            <tr class="info">
                 <td>{{ form.username.label_tag }}</td>
                 <td>{{ form.username }}</td>
                 <td>{{ form.username.errors }}</td> 
             </tr>
-            <tr>
+            <tr class="info">
                 <td>{{ form.password.label_tag }}</td>
                 <td>{{ form.password }}</td>
                 <td>{{ form.password.errors }}</td>
             </tr>
             </table>
             
-            <input type="submit" value="login" />
+            <input style="background-color: #42a6b4; color: white; float: right;" type="submit" value="login" />
 
         </form>
         <p style="margin-top: 10px; margin-left: 75px;">
-        <a style="text-decoration: none; color: #42a6b4; font-size: 20px" href="/accounts/register">회원가입하기</a>
+        <button style="background-color: #42a6b4; float: right;"><a style="text-decoration: none; color: white; font-size: 10px" href="/accounts/register">회원가입하기</a></button>
         </p>
 
       </div>

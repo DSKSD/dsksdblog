@@ -1,29 +1,37 @@
 {% extends "blog/layout.html" %}
 
+
 {% block title %}
 성동님의 블로그
 {% endblock %}
 
 {% block content %}
+{% load thumbnail %}
 
 <div class = "container">
     <div class="row">
       <div class="col-md-2"></div>
       <div class="col-md-8">
-          <form style = "margin-bottom: 20px;" action="{% url 'write' %}" method="POST">{% csrf_token %}
+          <form style = "margin-bottom: 20px;" action="{% url 'write' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
               <input style="margin-bottom: 2px;" class="form-control" type ="text" id="title" name="title" placeholder="제목을 입력하세요." required>
               <textarea class="form-control" id="content" rows=5  name="content" placeholder="무슨 생각하세요?"></textarea>
+              <input type="file" name = "pic" id="exampleInputFile">
               <button type="submit" class="btn btn-info" style="margin-top: 5px;">글쓰기</button>
            </form>
           {% for post in posts %}
               <div class="well" id="post_{{post.pk}}">
                   
                   {% if current_user == post.author %}
-                  <a style="color: black; margin-left: 5px; float: right;" href= "{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                  <button style="margin-left: 5px; float: right;"><a style="color: black;" href= "{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a></button>
                   <button class="post_delete" style="color: black; margin-left: 5px; float: right;" value="{{post.pk}}"><span class="glyphicon glyphicon-trash"></span></button>
                   {% endif %}
                   <p><strong>{{post.author}}</strong>  {{post.created_date}}</p>
                   <p><h1>{{post.title}}</h1></p>
+                  {% if post.photo %}
+                      {% thumbnail post.photo "600x600" crop="center" as im %}
+                          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                      {% endthumbnail %}
+                  {% endif %}
                   <p>{{post.text}}</p>
                   <div class= "reply_{{ post.pk }}">
                     {% for x in post.comments.all %}

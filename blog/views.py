@@ -4,6 +4,7 @@ from .models import Post, Comment
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here.
 
 # 회원가입 및 로그인 구현 부분 
@@ -49,6 +50,8 @@ def write(request):
     post.author = request.user
     post.title = request.POST['title']
     post.text = request.POST['content']
+    if 'pic' in request.FILES:
+        post.photo = request.FILES['pic']
     post.published_date = timezone.now()
     post.save()
 
